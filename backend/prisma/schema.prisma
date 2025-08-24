@@ -1,0 +1,16 @@
+model User {
+  id                String    @id @default(cuid())
+  email             String    @unique
+  name              String?
+  password          String?
+  phoneNumber       String?   @unique
+  provider          String    @default("local") // "local", "google"
+  
+  // --- NOVOS CAMPOS ---
+  emailVerified     DateTime? // Guarda a data em que o e-mail foi verificado
+  confirmationToken String?   @unique // Token único para confirmar o e-mail
+
+  // --- RELAÇÕES EXISTENTES ---
+  posts             Post[]
+  postComments      PostComment[]
+  resourceComments  ResourceComment[]

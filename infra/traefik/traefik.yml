@@ -1,0 +1,10 @@
+entryPoints:
+  web:
+    address: ":80"
+
+providers:
+  docker:
+    exposedByDefault: false
+
+api:
+  insecure: true # Habilita o dashboard do Traefik em http://localhost:8080
