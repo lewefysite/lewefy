@@ -3,12 +3,12 @@ FROM node:18-alpine AS builder
 
 WORKDIR /usr/src/app
 
-# Copia package.json e package-lock.json
-COPY package*.json ./
+# Copia package.json e instala dependências
+COPY backend/package*.json ./
 RUN npm install
 
 # Copia o restante do código
-COPY . .
+COPY backend/. .
 
 # Gera o cliente Prisma
 RUN npx prisma generate
@@ -33,3 +33,5 @@ COPY --from=builder /usr/src/app/node_modules/.prisma ./node_modules/.prisma
 EXPOSE 3000
 
 CMD ["npm", "run", "start:migrate"]
+
+
