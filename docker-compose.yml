@@ -24,8 +24,8 @@ services:
     image: postgres:14-alpine
     container_name: lewefy_db
     environment:
-      POSTGRES_USER: lewefy
-      POSTGRES_PASSWORD: secretpassword
+      POSTGRES_USER: lewefy_user
+      POSTGRES_PASSWORD: 03fH5XjreGWX1GTzmfOGz7hHplS8Rt6x
       POSTGRES_DB: lewefy
     ports:
       - "5432:5432"
@@ -87,3 +87,4 @@ volumes:
 networks:
   lewefy_net:
     driver: bridge
+
