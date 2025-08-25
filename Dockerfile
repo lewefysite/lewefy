@@ -3,12 +3,12 @@ FROM node:18-alpine AS builder
 
 WORKDIR /usr/src/app
 
-# Copia package.json e instala dependências
-COPY backend/package*.json ./
+COPY package*.json ./
+# Força a instalação de TODAS as dependências, incluindo as de desenvolvimento
 RUN npm install
 
-# Copia o restante do código
-COPY backend/. .
+# Copia todo o código-fonte
+COPY . .
 
 # Gera o cliente Prisma
 RUN npx prisma generate
@@ -16,22 +16,27 @@ RUN npx prisma generate
 # Compila a aplicação
 RUN npm run build
 
-# Estágio 2: Produção
+# ---
+# Estágio 2: Criação da imagem de produção final
 FROM node:18-alpine
 
 WORKDIR /usr/src/app
 
-# Copia package.json e instala apenas dependências de produção
+# Copia os manifestos de pacote da etapa anterior
 COPY --from=builder /usr/src/app/package*.json ./
+
+# Instala APENAS as dependências de produção.
 RUN npm install --only=production
 
-# Copia artefatos da build e schema do Prisma
+# Copia os artefatos da compilação, o schema do prisma e o cliente prisma gerado.
 COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/prisma ./prisma
 COPY --from=builder /usr/src/app/node_modules/.prisma ./node_modules/.prisma
 
+# Expõe a porta que a aplicação vai rodar
 EXPOSE 3000
 
-CMD ["npm", "run", "start:migrate"]
+# Comando para rodar a aplicação já compilada com migrações
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main"]
 
 
