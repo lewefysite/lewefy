@@ -68,4 +68,6 @@ Com o Docker e o Docker Compose instalados e o arquivo `.env` configurado, siga 
 Para parar todos os contêineres, execute:
 
 ```bash
+
 docker-compose down
+update
