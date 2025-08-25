@@ -3,22 +3,20 @@ FROM node:18-alpine AS builder
 
 WORKDIR /usr/src/app
 
-# ---- CORREÇÃO AQUI ----
-# Busca o package.json DENTRO da pasta 'backend'
+# Copia os arquivos de manifesto de pacotes da pasta backend
 COPY backend/package*.json ./
 
-# Instala as dependências
+# Instala todas as dependências
 RUN npm install
 
-# ---- CORREÇÃO AQUI ----
-# Copia todo o código-fonte DE DENTRO da pasta 'backend'
+# Copia todo o código-fonte da pasta backend
 COPY backend/. .
 
 # Gera o cliente Prisma
 RUN npx prisma generate
 
-# Compila a aplicação
-RUN npm run build
+# Compila a aplicação DIRETAMENTE com o TypeScript Compiler
+RUN npx tsc --project tsconfig.json
 
 # ---
 # Estágio 2: Criação da imagem de produção final
@@ -26,8 +24,7 @@ FROM node:18-alpine
 
 WORKDIR /usr/src/app
 
-# ---- CORREÇÃO AQUI ----
-# Copia os manifestos de pacote da pasta 'backend' no estágio anterior
+# Copia os manifestos de pacote da etapa anterior
 COPY --from=builder /usr/src/app/package*.json ./
 
 # Instala APENAS as dependências de produção.
@@ -42,4 +39,4 @@ COPY --from=builder /usr/src/app/node_modules/.prisma ./node_modules/.prisma
 EXPOSE 3000
 
 # Comando para rodar a aplicação já compilada com migrações
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
