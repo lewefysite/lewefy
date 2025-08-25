@@ -1,16 +1,15 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config'; // IMPORTADO
+import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { EmailModule } from './email/email.module'; // IMPORTADO
+import { EmailModule } from './mail/email.module'; // Caminho corrigido
 
 @Module({
   imports: [
-    // Torna as variáveis de ambiente disponíveis globalmente
-    ConfigModule.forRoot({ isGlobal: true }), 
-    AuthModule, 
-    UsersModule, 
-    EmailModule // ADICIONADO
+    ConfigModule.forRoot({ isGlobal: true }),
+    AuthModule,
+    UsersModule,
+    EmailModule,
   ],
   controllers: [],
   providers: [],
