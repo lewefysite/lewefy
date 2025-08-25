@@ -5,24 +5,23 @@ import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt.strategy';
-// ... outros imports
-import { EmailModule } from 'src/email/email.module'; // IMPORTADO
-import { PrismaModule } from 'src/prisma/prisma.module'; // Supondo que você tenha um PrismaModule
-import { RecaptchaGuard } from 'src/common/guards/recaptcha.guard'; // IMPORTADO
+import { EmailModule } from 'src/mail/email.module'; // Caminho corrigido
+import { PrismaModule } from 'src/prisma/prisma.module';
+import { RecaptchaGuard } from 'src/common/guards/recaptcha.guard';
+import { HttpModule } from '@nestjs/axios'; // Import necessário para o Guard
+
 @Module({
   imports: [
-  HttpModule, // ADICIONADO
-    // ... outros módulos
-    PrismaModule, // Adicione se tiver
-    EmailModule, // ADICIONADO
-	// ... outros módulos
+    HttpModule, // Adicionado para o RecaptchaGuard funcionar
+    UsersModule,
+    PassportModule,
+    JwtModule.register({
+      // Seus detalhes do JwtModule aqui
+    }),
+    PrismaModule,
+    EmailModule,
   ],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    // ... outros providers
-    RecaptchaGuard, // ADICIONADO
-  ],
+  providers: [AuthService, JwtStrategy, RecaptchaGuard],
 })
 export class AuthModule {}
-  
