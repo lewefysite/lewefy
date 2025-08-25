@@ -1,3 +1,18 @@
+// Arquivo Final e Corrigido: sitelewefy/backend/prisma/schema.prisma
+
+// 1. Bloco do Gerador: Informa ao Prisma para gerar o cliente JavaScript/TypeScript.
+generator client {
+  provider = "prisma-client-js"
+}
+
+// 2. Bloco da Fonte de Dados: Informa ao Prisma que você está usando um banco de dados PostgreSQL
+// e que a URL de conexão está na variável de ambiente DATABASE_URL.
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 3. SEUS MODELOS (agora dentro de um arquivo válido)
 model User {
   id                String    @id @default(cuid())
   email             String    @unique
@@ -5,12 +20,40 @@ model User {
   password          String?
   phoneNumber       String?   @unique
   provider          String    @default("local") // "local", "google"
-  
+
   // --- NOVOS CAMPOS ---
   emailVerified     DateTime? // Guarda a data em que o e-mail foi verificado
   confirmationToken String?   @unique // Token único para confirmar o e-mail
 
   // --- RELAÇÕES EXISTENTES ---
+  // Para que essas relações funcionem, os modelos Post, PostComment, e ResourceComment
+  // precisam existir. Adicionei modelos básicos abaixo para evitar erros.
   posts             Post[]
   postComments      PostComment[]
   resourceComments  ResourceComment[]
+}
+
+// --- MODELOS DE PLACEHOLDER ---
+// Adicione os campos necessários a estes modelos conforme sua necessidade.
+// Eles são necessários para que o "prisma generate" não falhe por referências quebradas.
+
+model Post {
+  id      String   @id @default(cuid())
+  // ... outros campos do seu Post
+  author  User     @relation(fields: [authorId], references: [id])
+  authorId String
+}
+
+model PostComment {
+  id      String   @id @default(cuid())
+  // ... outros campos do seu PostComment
+  author  User     @relation(fields: [authorId], references: [id])
+  authorId String
+}
+
+model ResourceComment {
+  id      String   @id @default(cuid())
+  // ... outros campos do seu ResourceComment
+  author  User     @relation(fields: [authorId], references: [id])
+  authorId String
+}
