@@ -1,9 +1,13 @@
-// Você pode adicionar as propriedades do seu DTO aqui depois.
-// Ex: import { IsString, IsEmail } from 'class-validator';
+import { IsString, IsEmail, MinLength } from 'class-validator';
+
 export class RegisterUserDto {
-  // @IsEmail()
-  // email: string;
-  
-  // @IsString()
-  // name: string;
+  @IsEmail({}, { message: 'Por favor, forneça um endereço de e-mail válido.' })
+  email: string;
+
+  @IsString()
+  name: string;
+
+  @IsString()
+  @MinLength(6, { message: 'A senha deve ter no mínimo 6 caracteres.' })
+  password: string;
 }
