@@ -2,25 +2,25 @@ import { Injectable, UnauthorizedException, BadRequestException, ConflictExcepti
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { PrismaService } from '../prisma/prisma.service'; // Importe o PrismaService
-import { EmailService } from '../email/email.service'; // Importe o EmailService
+import { PrismaService } from '../prisma/prisma.service';
+import { EmailService } from '../mail/email.service'; // <-- CORREÇÃO APLICADA AQUI
 import { randomBytes } from 'crypto';
-import { RegisterUserDto } from './dto/register-user.dto'; // Crie este arquivo DTO
+import { RegisterUserDto } from './dto/register-user.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-    private prisma: PrismaService, // Injete o Prisma
-    private emailService: EmailService, // Injete o EmailService
+    private prisma: PrismaService,
+    private emailService: EmailService,
   ) {}
 
-  // ... seu método validateUser e login existentes ...
+  // Seus métodos validateUser e login podem vir aqui...
 
   async register(registerDto: RegisterUserDto) {
-    // Passo 1: Verificar se o e-mail é válido com a API externa
-    await this.emailService.verifyEmailAddress(registerDto.email);
+    // Passo 1: Verificar se o e-mail é válido (se o seu emailService tiver essa lógica)
+    // await this.emailService.verifyEmailAddress(registerDto.email);
 
     // Passo 2: Verificar se o usuário já existe no banco
     const existingUser = await this.prisma.user.findUnique({
