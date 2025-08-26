@@ -1,77 +1,43 @@
-import { Injectable, UnauthorizedException, BadRequestException, ConflictException } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
+import { UsersService } from '../users/users.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { EmailService } from '../mail/email.service'; // <-- CORREÇÃO APLICADA AQUI
-import { randomBytes } from 'crypto';
-import { RegisterUserDto } from './dto/register-user.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
-    private jwtService: JwtService,
-    private prisma: PrismaService,
-    private emailService: EmailService,
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
+    private readonly prisma: PrismaService,
   ) {}
 
-  // Seus métodos validateUser e login podem vir aqui...
+  async validateUser(email: string, password: string) {
+    const user = await this.prisma.user.findUnique({ where: { email } });
+    if (!user || !user.password) throw new UnauthorizedException('Credenciais inválidas');
 
-  async register(registerDto: RegisterUserDto) {
-    // Passo 1: Verificar se o e-mail é válido (se o seu emailService tiver essa lógica)
-    // await this.emailService.verifyEmailAddress(registerDto.email);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) throw new UnauthorizedException('Credenciais inválidas');
 
-    // Passo 2: Verificar se o usuário já existe no banco
-    const existingUser = await this.prisma.user.findUnique({
-      where: { email: registerDto.email },
-    });
-
-    if (existingUser) {
-      throw new ConflictException('Este endereço de e-mail já está em uso.');
-    }
-
-    // Passo 3: Criar o usuário
-    const hashedPassword = await bcrypt.hash(registerDto.password, 10);
-    const confirmationToken = randomBytes(32).toString('hex');
-
-    const user = await this.prisma.user.create({
-      data: {
-        email: registerDto.email,
-        name: registerDto.name,
-        password: hashedPassword,
-        confirmationToken,
-      },
-    });
-
-    // Passo 4: Enviar o e-mail de confirmação
-    await this.emailService.sendConfirmationEmail(user.email, confirmationToken);
-
-    return { message: 'Cadastro realizado com sucesso! Por favor, verifique seu e-mail para ativar sua conta.' };
+    return user;
   }
 
-  async confirmEmail(token: string) {
-    const user = await this.prisma.user.findUnique({
-      where: { confirmationToken: token },
-    });
-
-    if (!user) {
-      throw new BadRequestException('Token de confirmação inválido ou expirado.');
-    }
-
-    await this.prisma.user.update({
-      where: { id: user.id },
-      data: {
-        emailVerified: new Date(),
-        confirmationToken: null, // Limpa o token após o uso
-      },
-    });
-
-    // Opcional: Logar o usuário automaticamente após a confirmação
-    const payload = { username: user.email, sub: user.id };
+  async login(user: any) {
+    const payload = { sub: user.id, email: user.email };
     return {
-      message: 'E-mail confirmado com sucesso!',
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async register(data: { email: string; password: string; name?: string }) {
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+    const user = await this.prisma.user.create({
+      data: {
+        email: data.email,
+        password: hashedPassword,
+        name: data.name,
+      },
+    });
+    return this.login(user);
   }
 }
