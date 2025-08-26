@@ -9,6 +9,7 @@ import { PrismaModule } from 'src/prisma/prisma.module';
 import { RecaptchaGuard } from 'src/common/guards/recaptcha.guard';
 import { HttpModule } from '@nestjs/axios';
 import { EmailModule } from 'src/mail/email.module';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -17,12 +18,16 @@ import { EmailModule } from 'src/mail/email.module';
     PrismaModule,
     EmailModule,
     HttpModule,
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '60m' },
+    JwtModule.registerAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        secret: config.get<string>('JWT_SECRET') || 'default_secret',
+        signOptions: { expiresIn: '60m' },
+      }),
     }),
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, RecaptchaGuard],
 })
 export class AuthModule {}
+```
