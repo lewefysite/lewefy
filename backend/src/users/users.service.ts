@@ -3,8 +3,15 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class UsersService {
-    constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {}
 
-    // Adicione seus métodos de usuário aqui
-    // Ex: findOne, findAll, etc.
+  async findAll() {
+    return this.prisma.user.findMany();
+  }
+
+  // Você pode adicionar mais métodos aqui, como:
+  // async findById(id: string) { ... }
+  // async create(data: CreateUserDto) { ... }
+  // async update(id: string, data: UpdateUserDto) { ... }
+  // async delete(id: string) { ... }
 }
