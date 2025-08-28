@@ -1,8 +1,8 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import ScrollToTop from '@/pages/util/scrolltotop.jsx';
-import HomePage from '@/pages/homepage.jsx';
-import NotFoundPage from '@/pages/notfoundpage.jsx';
+import ScrollToTop from './util/scrolltotop.jsx';
+import HomePage from './pages/homepage.jsx';
+import NotFoundPage from './pages/notfoundpage.jsx';
 
 export default function App() {
   return (
