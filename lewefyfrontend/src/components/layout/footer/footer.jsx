@@ -2,7 +2,7 @@ import React from 'react';
 
 export function Footer() {
   return (
-    <div className="w-full bg-brandsecondary text-neutralwhite py-8 px-4 flex flex-col items-center">
+    <footer className="w-full bg-brandsecondary text-neutralwhite py-8 px-4 flex flex-col items-center">
       <p className="text-sm text-center">
         © {new Date().getFullYear()} Lewefy. Todos os direitos reservados.
       </p>
@@ -11,6 +11,6 @@ export function Footer() {
         <a href="/login" className="hover:underline">Login</a>
         <a href="/sobre" className="hover:underline">Sobre</a>
       </nav>
-    </div>
+    </footer>
   );
 }
