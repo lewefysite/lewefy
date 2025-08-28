@@ -3,9 +3,8 @@ import type { Config } from 'tailwindcss';
 const config: Config = {
   content: [
     './index.html',
-    './src/**/*.{js,ts,jsx,tsx}',
-    './public/**/*.html',
-    './**/*.{md,html}' // opcional, cobre casos fora de src/public
+    './src/**/*.{js,ts,jsx,tsx,html}',
+    './public/**/*.html'
   ],
   theme: {
     extend: {
@@ -16,17 +15,17 @@ const config: Config = {
         neutralwhite: 'rgba(255, 255, 255, 1)',
         actionerror: 'rgba(229, 56, 53, 1)',
         actionsuccess: 'rgba(46, 125, 49, 1)',
-        actionwarning: 'rgba(251, 192, 45, 1)',
+        actionwarning: 'rgba(251, 192, 45, 1)'
       },
       fontFamily: {
         inter: ['Inter', 'Helvetica', 'sans-serif'],
         roboto: ['Roboto', 'Helvetica', 'sans-serif'],
         arimo: ['Arimo', 'sans-serif'],
-        poppins: ['Poppins', 'sans-serif'],
-      },
-    },
+        poppins: ['Poppins', 'sans-serif']
+      }
+    }
   },
-  plugins: [],
+  plugins: []
 };
 
 export default config;
