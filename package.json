@@ -12,7 +12,7 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
-    "build": "nest build",
+    "build": "cd lewefyfrontend && npm install && npm run build",
     "dev:frontend": "cd frontend && npm run dev",
     "build:frontend": "cd frontend && npm run build",
     "preview:frontend": "cd frontend && npm run preview",
