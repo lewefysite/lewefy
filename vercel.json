@@ -1,8 +1,11 @@
 {
+  "version": 2,
   "builds": [
     {
       "src": "lewefyfrontend/package.json",
-      "use": "@vercel/vite"
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist" }
     }
-  ]
+  ],
+  "routes": []
 }
