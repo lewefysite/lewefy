@@ -1,12 +1,12 @@
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import ScrollToTop from './pages/util/scrollToTop.jsx';
-export default function scrollToTop() {
-  const { pathname } = useLocation();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+export default function App() {
+  return (
+    <>
+      {/* Coloque o ScrollToTop aqui para resetar o scroll sempre que trocar de rota */}
+      <ScrollToTop />
 
-  return null;
+      {/* Aqui você renderiza suas rotas ou componentes principais */}
+    </>
+  );
 }
