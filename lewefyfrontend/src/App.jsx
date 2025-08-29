@@ -1,10 +1,9 @@
 // File: src/App.jsx
-import { Routes, Route } from 'react-router-dom';
-import ScrollToTop from './pages/util/scrollToTop.jsx';
-
-// importe seus componentes de página
-// import Home from './pages/Home.jsx';
-// import About from './pages/About.jsx';
+import { Routes } from 'react-router-dom';
+import ScrollToTop from './pages/util/scrollTopTop.jsx'; 
+// importe suas páginas, por exemplo:
+// import Home from './pages/homepage.jsx';
+// import NotFound from './pages/notfoundpage.jsx';
 
 export default function App() {
   return (
@@ -12,9 +11,9 @@ export default function App() {
       <ScrollToTop />
 
       <Routes>
-        {/* Exemplo de rotas: */}
+        {/* Exemplo: */}
         {/* <Route path="/" element={<Home />} /> */}
-        {/* <Route path="/about" element={<About />} /> */}
+        {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
     </>
   );
