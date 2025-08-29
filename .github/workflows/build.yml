@@ -12,12 +12,29 @@ jobs:
     defaults:
       run:
         working-directory: ./lewefyfrontend
+
     steps:
+      # 1) Checkout
       - uses: actions/checkout@v3
+
+      # 2) Setup Node 22
       - uses: actions/setup-node@v3
         with:
-          node-version: "22"
+          node-version: '22'
+
+      # 3) (Opcional) Cache do npm para acelerar reinstalações
+      - name: Cache npm
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('lewefyfrontend/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # 4) Instala dependências sem exigir lockfile
       - name: Install dependencies
-        run: npm ci
+        run: npm install
+
+      # 5) Build com Vite
       - name: Run build
         run: npm run build
