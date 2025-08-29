@@ -1,3 +1,4 @@
+// File: package.json (raiz do monorepo)
 {
   "name": "lewefy-monorepo",
   "private": true,
@@ -8,9 +9,8 @@
     "node": "22.x"
   },
   "scripts": {
-    "install": "cd lewefyfrontend && npm install",
     "build": "cd lewefyfrontend && npm run build",
-    "dev": "cd lewefyfrontend && npm run dev",
-    "lint": "cd lewefyfrontend && npm run lint"
+    "dev":   "cd lewefyfrontend && npm run dev",
+    "lint":  "cd lewefyfrontend && npm run lint"
   }
 }
