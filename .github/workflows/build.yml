@@ -31,8 +31,8 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install dependencies
-        run: npm install
+        # --userconfig /dev/null ignora qualquer .npmrc restante
+        run: npm install --userconfig /dev/null
 
       - name: Run build
         run: npm run build
-
