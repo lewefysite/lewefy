@@ -2,11 +2,16 @@
   "name": "lewefy-frontend",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "vite",
+    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}' --report-unused-disable-directives --max-warnings 0",
+    "prebuild": "npm run lint",
     "build": "vite build",
-    "preview": "vite preview",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "preview": "vite preview"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -14,9 +19,7 @@
   },
   "devDependencies": {
     "vite": "^4.5.14",
-    "eslint": "^8.57.1"
-  },
-  "engines": {
-    "node": "18.x"
+    "eslint": "^8.57.1",
+    "eslint-plugin-import": "^2.27.5"
   }
 }
