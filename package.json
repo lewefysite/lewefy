@@ -1,13 +1,16 @@
 {
   "name": "lewefy-monorepo",
   "private": true,
+  "workspaces": [
+    "lewefyfrontend"
+  ],
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "install": "cd lewefyfrontend && npm install",
     "build": "cd lewefyfrontend && npm run build",
     "dev": "cd lewefyfrontend && npm run dev",
     "lint": "cd lewefyfrontend && npm run lint"
-  },
-  "engines": {
-    "node": "18.x"
   }
 }
