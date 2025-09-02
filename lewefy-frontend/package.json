@@ -34,7 +34,3 @@
     "vite": "6.0.4"
   }
 }
-```*Observação: Adicionei `axios` como dependência para a comunicação com a API e `autoprefixer` e `postcss` como devDependencies, que são comuns em projetos Tailwind CSS.*
-
----
-Aguardando sua confirmação para o próximo arquivo.
