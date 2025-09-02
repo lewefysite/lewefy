@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Perfis de usuários podem ser lidos publicamente (para exibir nomes em comentários)
+    // mas só podem ser alterados pelo próprio dono.
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth.uid == userId;
+    }
+
+    // Perfis de profissionais aprovados são públicos.
+    // A escrita é permitida apenas pelo próprio profissional.
+    match /professionals/{profId} {
+      allow read: if true;
+      allow write: if request.auth.uid == profId;
+    }
+
+    // Posts podem ser lidos por qualquer usuário autenticado.
+    // A criação, atualização e exclusão são permitidas apenas para o autor do post.
+    match /posts/{postId} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if request.auth.uid == request.resource.data.authorId;
+
+      // Comentários e curtidas podem ser criados/deletados por qualquer usuário autenticado.
+      match /comments/{commentId} {
+        allow read, create: if request.auth != null;
+      }
+      match /likes/{likeId} {
+        allow create, delete: if request.auth.uid == likeId;
+      }
+    }
+
+    // Solicitações de Match são privadas entre o usuário e o profissional.
+    // Regra mais complexa, a ser implementada com validações no backend.
+    match /matchRequests/{requestId} {
+       allow read, write: if request.auth.uid == resource.data.userId || request.auth.uid == resource.data.professionalId;
+    }
+  }
+}
